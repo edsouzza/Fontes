@@ -1,0 +1,41 @@
+unit U_QRelAniversariantes;
+
+interface
+
+uses Windows, SysUtils, Messages, Classes, Graphics, Controls,
+  StdCtrls, ExtCtrls, Forms, QuickRpt, QRCtrls, FMTBcd, DBClient, Provider,
+  DB, SqlExpr;
+
+type
+  TQ_RelAniversariantes = class(TQuickRep)
+    qrbndPageHeaderBand1: TQRBand;
+    Qr_titulo: TQRLabel;
+    qrsysdt2: TQRSysData;
+    qrbndDetailBand1: TQRBand;
+    qrdbtxtNASCIMENTO: TQRDBText;
+    qrbnd1: TQRBand;
+    qrsysdt4: TQRSysData;
+    qrsysdt5: TQRSysData;
+    qry_RelAniversariantes: TSQLQuery;
+    dsp_RelAniversariantes: TDataSetProvider;
+    cds_RelAniversariantes: TClientDataSet;
+    QRDBText1: TQRDBText;
+    cds_RelAniversariantesCLI_NOME: TStringField;
+    cds_RelAniversariantesCLI_DATANASCTO: TDateField;
+    lblnomeDoMes: TQRLabel;
+    qrlbl6: TQRLabel;
+    qrlbl2: TQRLabel;
+  private
+
+  public
+
+  end;
+
+var
+  Q_RelAniversariantes: TQ_RelAniversariantes;
+
+implementation
+
+{$R *.DFM}
+
+end.

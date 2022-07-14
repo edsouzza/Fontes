@@ -1,0 +1,530 @@
+object _frmVendaProdsNaoCads: T_frmVendaProdsNaoCads
+  Left = 818
+  Top = 211
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  BorderWidth = 4
+  Caption = 'Sa'#237'da de produto n'#227'o cadastrado'
+  ClientHeight = 460
+  ClientWidth = 609
+  Color = clInfoBk
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  Icon.Data = {
+    0000010001001010000001000800680500001600000028000000100000002000
+    0000010008000000000000000000000000000000000000000000000000000000
+    000001010100FF0000000000FF00B4B4FF005959FF002121FF00FFFFFF008E8E
+    FF00DDDDFF003B3BFF001010FF009999FF006666FF00E6E6FF00CCCCFF003333
+    FF000808FF007F7FFF00A6A6FF00F7F7FF004B4BFF006666FF002929FF00BFBF
+    FF001717FF007373FF00ABABFF004040FF000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000303030814090603030303030303000003
+    0303100F070F10100B03030303000003031A0707070707071810030303000003
+    0A07070F0808040707090603030000030C07071A0303110707070D0303000003
+    171C1C11190518070709170303000003030303130E1407071405030303000003
+    0311130707070908060B11110300000303050707090D030310041B1A03000003
+    031507071803030B0C0707120300000303191307070C081807070F1103000003
+    0303110D0F070707071306030300000303030303191015070708030303000003
+    030303030303031207141A03030000000000000000000000000000000000FFFF
+    0000800100008001000080010000800100008001000080010000800100008001
+    0000800100008001000080010000800100008001000080010000FFFF0000}
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label4: TLabel
+    Left = 38
+    Top = 152
+    Width = 213
+    Height = 22
+    Caption = 'Valor Total do Movimento'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clRed
+    Font.Height = -19
+    Font.Name = 'Times New Roman'
+    Font.Style = [fsBold]
+    ParentFont = False
+    ParentShowHint = False
+    ShowHint = False
+  end
+  object pnl_cabecalho: TPanel
+    Left = 0
+    Top = 0
+    Width = 609
+    Height = 55
+    Align = alTop
+    BorderWidth = 2
+    BorderStyle = bsSingle
+    Caption = 'Venda de produto n'#227'o cadastrado'
+    Color = clBlue
+    Ctl3D = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWhite
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentCtl3D = False
+    ParentFont = False
+    TabOrder = 0
+    object lblDataDoDia: TLabel
+      Left = 520
+      Top = 20
+      Width = 76
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'lblDataDoDia'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object lblHoraAtual: TLabel
+      Left = 10
+      Top = 20
+      Width = 70
+      Height = 13
+      Caption = 'lblHoraAtual'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+  end
+  object pnl_rodape: TPanel
+    Left = 0
+    Top = 405
+    Width = 609
+    Height = 55
+    Align = alBottom
+    BorderWidth = 2
+    BorderStyle = bsSingle
+    Color = clBlue
+    Ctl3D = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWhite
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentCtl3D = False
+    ParentFont = False
+    TabOrder = 1
+    object btn_Sair: TSpeedButton
+      Left = 426
+      Top = 9
+      Width = 148
+      Height = 36
+      Cursor = crHandPoint
+      Caption = 'Sair'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      Glyph.Data = {
+        36050000424D3605000000000000360400002800000010000000100000000100
+        08000000000000010000120B0000120B00000001000008000000000000006699
+        CC0066CCCC007F7F7F00FFFFFF000000FF0000FFFF00BFBFBF00000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000030500000003
+        0503050305030503050307000001000703070307030703070305000001010006
+        0404000000000000000000010101000404060005050505050505000101010004
+        0404000505050505050500010001000604040005000005050505000100000004
+        0406000002000505050500010001000404040002020000000000000101010006
+        0400020202020202020000010101000400020202020202020200000101010004
+        0400020202020202020000010100000404060002020000000000000100000406
+        0404000002000505050500000000040404040005000005050505000004040604
+        0406000505050505050500000000000000000005050505050505}
+      ParentFont = False
+      OnClick = btn_SairClick
+    end
+    object btn_Gravar: TSpeedButton
+      Left = 34
+      Top = 9
+      Width = 148
+      Height = 36
+      Cursor = crHandPoint
+      Hint = 'Entrar'
+      Caption = 'Inserir na Venda'
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      Glyph.Data = {
+        36050000424D3605000000000000360400002800000010000000100000000100
+        08000000000000010000120B0000120B00000001000004000000D3D3D3004DA6
+        A6004D4D4D000000FF0000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000030303030303
+        0303030303030303030303030202020202020202020202020203030201010202
+        0202020200000201020303020101020202020202000002010203030201010202
+        0202020200000201020303020101020202020202020202010203030201010101
+        0101010101010101020303020101020202020202020201010203030201020000
+        0000000000000201020303020102000000000000000002010203030201020000
+        0000000000000201020303020102000000000000000002010203030201020000
+        0000000000000202020303020102000000000000000002000203030202020202
+        0202020202020202020303030303030303030303030303030303}
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = btn_GravarClick
+    end
+  end
+  object pnl_DadosUsuario: TPanel
+    Left = -2
+    Top = 55
+    Width = 611
+    Height = 351
+    BevelInner = bvSpace
+    Ctl3D = False
+    ParentCtl3D = False
+    TabOrder = 2
+    object pnl1: TPanel
+      Left = 9
+      Top = 8
+      Width = 592
+      Height = 340
+      BevelInner = bvRaised
+      TabOrder = 0
+      object lbl2: TLabel
+        Left = 27
+        Top = 183
+        Width = 123
+        Height = 22
+        Caption = 'Valor de Venda'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlue
+        Font.Height = -19
+        Font.Name = 'Times New Roman'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = False
+      end
+      object Label2: TLabel
+        Left = 27
+        Top = 232
+        Width = 95
+        Height = 22
+        Caption = 'Quantidade'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlue
+        Font.Height = -19
+        Font.Name = 'Times New Roman'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = False
+      end
+      object Label3: TLabel
+        Left = 27
+        Top = 283
+        Width = 213
+        Height = 22
+        Caption = 'Valor Total do Movimento'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clRed
+        Font.Height = -19
+        Font.Name = 'Times New Roman'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = False
+      end
+      object Label1: TLabel
+        Left = 27
+        Top = 306
+        Width = 178
+        Height = 22
+        Caption = 'Descri'#231#227'o do Produto'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlue
+        Font.Height = -19
+        Font.Name = 'Times New Roman'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = False
+        Visible = False
+      end
+      object Label5: TLabel
+        Left = 27
+        Top = 36
+        Width = 140
+        Height = 22
+        Caption = 'Valor de Compra'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlue
+        Font.Height = -19
+        Font.Name = 'Times New Roman'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = False
+      end
+      object Label6: TLabel
+        Left = 27
+        Top = 134
+        Width = 122
+        Height = 22
+        Caption = 'Valor de Lucro'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlue
+        Font.Height = -19
+        Font.Name = 'Times New Roman'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = False
+      end
+      object Label7: TLabel
+        Left = 27
+        Top = 85
+        Width = 189
+        Height = 22
+        Caption = 'Percentual de Lucro %'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlue
+        Font.Height = -19
+        Font.Name = 'Times New Roman'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = False
+      end
+      object edtValorVenda: TEditNum
+        Left = 365
+        Top = 171
+        Width = 201
+        Height = 30
+        Hint = 'Insira o valor em dinheiro recebido do cliente'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -19
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        Inteiro = 6
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 5
+        Text = '0,00'
+      end
+      object edt_totalmovimento: TEditNum
+        Left = 366
+        Top = 273
+        Width = 201
+        Height = 30
+        Hint = 'Valor total do movimento'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -19
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        Inteiro = 6
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 4
+        Text = '0,00'
+      end
+      object edt_qde: TEdit
+        Left = 366
+        Top = 220
+        Width = 201
+        Height = 30
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGreen
+        Font.Height = -19
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 3
+        OnChange = edt_qdeChange
+        OnEnter = edt_qdeEnter
+        OnExit = edt_qdeExit
+      end
+      object edtCodigoProdNaoCad: TEdit
+        Left = 428
+        Top = 302
+        Width = 140
+        Height = 26
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -16
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        MaxLength = 13
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 7
+        Text = '0000000000000'
+        Visible = False
+        OnExit = edtCodigoProdNaoCadExit
+      end
+      object edtDescricao: TEdit
+        Left = 229
+        Top = 302
+        Width = 196
+        Height = 26
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -16
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 6
+        Text = 'Produto nao cadastrado'
+        Visible = False
+      end
+      object edtValorCompra: TEditNum
+        Left = 365
+        Top = 27
+        Width = 201
+        Height = 30
+        Hint = 'Insira o valor de compra do produto'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGreen
+        Font.Height = -19
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        Inteiro = 6
+        ParentFont = False
+        TabOrder = 0
+        Text = '0,00'
+        OnExit = edtValorCompraExit
+      end
+      object edtValorLucro: TEditNum
+        Left = 365
+        Top = 123
+        Width = 201
+        Height = 30
+        Hint = 'Insira o valor de lucro pretendido'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        Inteiro = 6
+        ParentFont = False
+        TabOrder = 2
+        Text = '0,00'
+        OnExit = edtValorLucroExit
+      end
+      object edtPercentualLucro: TEditNum
+        Left = 365
+        Top = 75
+        Width = 201
+        Height = 30
+        Hint = 'Insira o valor de lucro pretendido'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        Inteiro = 6
+        ParentFont = False
+        TabOrder = 1
+        Text = '0,00'
+        OnExit = edtPercentualLucroExit
+      end
+    end
+  end
+end

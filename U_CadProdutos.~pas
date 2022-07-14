@@ -1,0 +1,304 @@
+unit U_CadProdutos;
+
+interface
+uses Controls, SysUtils, Dialogs, u_dmDados, u_biblioSysSalao;
+  type TProduto = class
+  private
+    FId_Produto     : integer;
+    Fcategoria_id   : integer;
+    Ffabricante_id  : integer;
+    Ffornecedor_id  : integer;
+    Fcod_alt1       : string;
+    Fcod_alt2       : string;
+    Fcod_alt3       : string;
+    Fcod_alt4       : string;
+    Fcod_barras     : string;
+    Fdescricao      : string;
+    Festoque_atual  : double;
+    Festoqueminimo  : double;
+    Fprecocompra    : double;
+    Fprecovenda     : double;
+    Fvalordelucro   : double;
+    Funidade        : string;
+    Fdatacad        : Tdate;
+    Fobs            : string;
+    Fmesano         : string;
+    Ftipo           : string;
+    Faliquota       : string;
+    Fstatus         : string;
+
+  public
+    constructor criarObj;
+    destructor Destroy; override;
+    property id_Produto     : integer read Fid_Produto    write FId_Produto;
+    property categoria_id   : integer read Fcategoria_id  write Fcategoria_id;
+    property fabricante_id  : integer read Ffabricante_id write Ffabricante_id;
+    property fornecedor_id  : integer read Ffornecedor_id write Ffornecedor_id;
+    property cod_alt1       : string  read Fcod_alt1      write Fcod_alt1;
+    property cod_alt2       : string  read Fcod_alt2      write Fcod_alt2;
+    property cod_alt3       : string  read Fcod_alt3      write Fcod_alt3;
+    property cod_alt4       : string  read Fcod_alt4      write Fcod_alt4;
+    property cod_barras     : string  read Fcod_barras    write Fcod_barras;
+    property descricao      : string  read Fdescricao     write Fdescricao;
+    property estoque_atual  : double  read Festoque_atual write Festoque_atual;
+    property estoqueminimo  : double  read Festoqueminimo write Festoqueminimo;
+    property precocompra    : double  read Fprecocompra   write Fprecocompra;
+    property precovenda     : double  read Fprecovenda    write Fprecovenda;
+    property valordelucro   : double  read Fvalordelucro  write Fvalordelucro;
+    property unidade        : string  read Funidade       write Funidade;
+    property datacad        : Tdate   read Fdatacad       write Fdatacad;
+    property obs            : string  read Fobs           write Fobs;
+    property mesano         : string  read Fmesano        write Fmesano;
+    property tipo           : string  read Ftipo          write Ftipo;
+    property aliquota       : string  read Faliquota      write Faliquota;
+    property status         : string  read Fstatus        write Fstatus;
+
+    Function inserirProduto   : boolean;
+    Function atualizarProduto : boolean;
+    Function excluirProduto   : boolean;
+    Function pesquisarProduto(pCodigo: integer; pDescricao: string): Boolean;
+    Function pesquisarProdutoPorCodAlt(CodAlt: string): boolean;
+
+  end;
+
+  var
+  idProdutoPesquisado : integer;
+  codAlt              : string;
+  codAlts : array[1..4] of string =('COD_ALT1', 'COD_ALT2', 'COD_ALT3', 'COD_ALT4');
+
+
+
+implementation
+
+{ TProduto }
+
+constructor TProduto.criarObj;
+begin
+
+     id_Produto     := 0;
+     categoria_id   := 0;
+     fabricante_id  := 0;
+     fornecedor_id  := 0;
+     cod_alt1       := '';
+     cod_alt2       := '';
+     cod_alt3       := '';
+     cod_alt4       := '';
+     cod_barras     := '';
+     descricao      := '';
+     estoque_atual  := 0;
+     estoqueminimo  := 0;
+     precocompra    := 0;
+     precovenda     := 0;
+     valordelucro   := 0;
+     unidade        := '';
+     datacad        := 0;
+     obs            := '';
+     mesano         := '';
+     tipo           := '';
+     aliquota       := '';
+     status         := '';     
+
+end;
+
+destructor TProduto.Destroy;
+begin
+  inherited;
+end;
+
+Function TProduto.excluirProduto: boolean;
+begin 
+   with dm_Conexao.cds_CadProduto do
+   begin 
+      Delete;
+      ApplyUpdates(0);
+
+   try
+      Result := True;
+
+    except
+      Result := False;
+
+     end;   
+   end;
+
+end;
+
+Function TProduto.atualizarProduto: boolean;
+begin
+   with dm_Conexao.cds_CadProduto do
+   begin
+        edit;
+        FieldByName('id_produto').AsInteger      := self.id_produto;
+        FieldByName('categoria_id').AsInteger    := self.categoria_id;
+        FieldByName('fabricante_id').AsInteger   := self.fabricante_id;
+        FieldByName('fornecedor_id').AsInteger   := self.fornecedor_id;
+        FieldByName('cod_alt1').AsString         := self.cod_alt1;
+        FieldByName('cod_alt2').AsString         := self.cod_alt2;
+        FieldByName('cod_alt3').AsString         := self.cod_alt3;
+        FieldByName('cod_alt4').AsString         := self.cod_alt4;
+        FieldByName('cod_barras').AsString       := self.cod_barras;
+        FieldByName('descricao').AsString        := self.descricao;
+        FieldByName('estoque_atual').AsFloat     := self.estoque_atual;
+        FieldByName('estoqueminimo').AsFloat     := self.estoqueminimo;
+        FieldByName('precocompra').AsFloat       := self.precocompra;
+        FieldByName('precovenda').AsFloat        := self.precovenda;
+        FieldByName('valordelucro').AsFloat      := self.valordelucro;
+        FieldByName('unidade').AsString          := self.unidade;
+        FieldByName('datacad').AsDateTime        := self.datacad;
+        FieldByName('obs').AsString              := self.obs;
+        FieldByName('mesano').AsString           := self.mesano;
+        FieldByName('tipo').AsString             := self.tipo;
+        FieldByName('aliquota').AsString         := self.aliquota;
+        FieldByName('status').AsString           := self.status;
+
+       try
+          ApplyUpdates(0);
+          Result := True;
+
+      except
+          Result := False;
+
+      end;
+    end;
+
+end;
+
+Function TProduto.inserirProduto: boolean;
+begin
+   with dm_Conexao.cds_CadProduto do
+   begin
+        append;
+        FieldByName('id_produto').AsInteger      := self.id_produto;
+        FieldByName('categoria_id').AsInteger    := self.categoria_id;
+        FieldByName('fabricante_id').AsInteger   := self.fabricante_id;
+        FieldByName('fornecedor_id').AsInteger   := self.fornecedor_id;
+        FieldByName('cod_alt1').AsString         := self.cod_alt1;
+        FieldByName('cod_alt2').AsString         := self.cod_alt2;
+        FieldByName('cod_alt3').AsString         := self.cod_alt3;
+        FieldByName('cod_alt4').AsString         := self.cod_alt4;
+        FieldByName('cod_barras').AsString       := self.cod_barras;
+        FieldByName('descricao').AsString        := self.descricao;
+        FieldByName('estoque_atual').AsFloat     := self.estoque_atual;
+        FieldByName('estoqueminimo').AsFloat     := self.estoqueminimo;
+        FieldByName('precocompra').AsFloat       := self.precocompra;
+        FieldByName('precovenda').AsFloat        := self.precovenda;
+        FieldByName('valordelucro').AsFloat      := self.valordelucro;
+        FieldByName('unidade').AsString          := self.unidade;
+        FieldByName('datacad').AsDateTime        := self.datacad;
+        FieldByName('obs').AsString              := self.obs;
+        FieldByName('mesano').AsString           := self.mesano;
+        FieldByName('tipo').AsString             := self.tipo;
+        FieldByName('aliquota').AsString         := self.aliquota;
+        FieldByName('status').AsString           := self.status;
+
+       try
+          ApplyUpdates(0);
+          Result := True;
+
+      except
+          Result := False;
+
+      end;
+    end;
+
+end;
+
+Function TProduto.pesquisarProduto(pCodigo: integer; pDescricao: string): Boolean;
+begin
+    with dm_Conexao.cds_CadProduto do
+    begin
+      Close;
+      CommandText:=('SELECT * FROM PRODUTOS WHERE ID_PRODUTO = :pID OR DESCRICAO = :pDESC');
+      Params.ParamByName('pID').AsInteger  := pCodigo;
+      Params.ParamByName('pDESC').AsString := pDescricao;
+      Open;
+
+        if not IsEmpty then
+        begin
+            self.id_produto       :=  dm_Conexao.cds_CadProduto.FieldByName('id_produto').AsInteger;
+            self.categoria_id     :=  dm_Conexao.cds_CadProduto.FieldByName('categoria_id').AsInteger;
+            self.fabricante_id    :=  dm_Conexao.cds_CadProduto.FieldByName('fabricante_id').AsInteger;
+            self.fornecedor_id    :=  dm_Conexao.cds_CadProduto.FieldByName('fornecedor_id').AsInteger;
+            self.cod_alt1         :=  dm_Conexao.cds_CadProduto.FieldByName('cod_alt1').AsString;
+            self.cod_alt2         :=  dm_Conexao.cds_CadProduto.FieldByName('cod_alt2').AsString;
+            self.cod_alt3         :=  dm_Conexao.cds_CadProduto.FieldByName('cod_alt3').AsString;
+            self.cod_alt4         :=  dm_Conexao.cds_CadProduto.FieldByName('cod_alt4').AsString;
+            self.cod_barras       :=  dm_Conexao.cds_CadProduto.FieldByName('cod_barras').AsString;
+            self.descricao        :=  dm_Conexao.cds_CadProduto.FieldByName('descricao').AsString;
+            self.estoque_atual    :=  dm_Conexao.cds_CadProduto.FieldByName('estoque_atual').AsFloat;
+            self.estoqueminimo    :=  dm_Conexao.cds_CadProduto.FieldByName('estoqueminimo').AsFloat;
+            self.precocompra      :=  dm_Conexao.cds_CadProduto.FieldByName('precocompra').AsFloat;
+            self.precovenda       :=  dm_Conexao.cds_CadProduto.FieldByName('precovenda').AsFloat;
+            self.valordelucro     :=  dm_Conexao.cds_CadProduto.FieldByName('valordelucro').AsFloat;
+            self.unidade          :=  dm_Conexao.cds_CadProduto.FieldByName('unidade').AsString;
+            self.datacad          :=  dm_Conexao.cds_CadProduto.FieldByName('datacad').AsDateTime;
+            self.obs              :=  dm_Conexao.cds_CadProduto.FieldByName('obs').AsString;
+            self.mesano           :=  dm_Conexao.cds_CadProduto.FieldByName('mesano').AsString;
+            self.tipo             :=  dm_Conexao.cds_CadProduto.FieldByName('tipo').AsString;
+            self.aliquota         :=  dm_Conexao.cds_CadProduto.FieldByName('aliquota').AsString;
+            self.status           :=  dm_Conexao.cds_CadProduto.FieldByName('status').AsString;
+            Result                := true;
+
+        end else begin
+          Result  := false;
+
+        end;
+
+     end;
+
+end;
+
+Function TProduto.pesquisarProdutoPorCodAlt(CodAlt: string): boolean;
+begin
+
+  {   _Sql  := ('SELECT * FROM produtos WHERE COD_ALT1 LIKE ''%'+codAlt+'%'' OR COD_ALT2 LIKE ''%'+codAlt+'%'' '+
+              'OR COD_ALT3 LIKE ''%'+codAlt+'%'' OR COD_ALT4 LIKE ''%'+codAlt+'%'' ');
+       ATE AQUI ESTA CADASTRANDO O SIMILAR DO ALT1 NORMALMENTE, MAS QDO ESTA VAZIO DA ERRO
+               }
+
+
+   _Sql  := ('SELECT * FROM produtos WHERE COD_ALT1 LIKE ''%'+codAlt+'%'' ');
+
+    with dm_Conexao.cds_CadProduto do
+    begin
+      Close;
+      CommandText:=(_sql);
+      Open;
+
+        if not IsEmpty then
+        begin
+            self.id_produto       :=  dm_Conexao.cds_CadProduto.FieldByName('id_produto').AsInteger;
+            self.categoria_id     :=  dm_Conexao.cds_CadProduto.FieldByName('categoria_id').AsInteger;
+            self.fabricante_id    :=  dm_Conexao.cds_CadProduto.FieldByName('fabricante_id').AsInteger;
+            self.fornecedor_id    :=  dm_Conexao.cds_CadProduto.FieldByName('fornecedor_id').AsInteger;
+            self.cod_alt1         :=  dm_Conexao.cds_CadProduto.FieldByName('cod_alt1').AsString;
+            self.cod_alt2         :=  dm_Conexao.cds_CadProduto.FieldByName('cod_alt2').AsString;
+            self.cod_alt3         :=  dm_Conexao.cds_CadProduto.FieldByName('cod_alt3').AsString;
+            self.cod_alt4         :=  dm_Conexao.cds_CadProduto.FieldByName('cod_alt4').AsString;
+            self.cod_barras       :=  dm_Conexao.cds_CadProduto.FieldByName('cod_barras').AsString;
+            self.descricao        :=  dm_Conexao.cds_CadProduto.FieldByName('descricao').AsString;
+            self.estoque_atual    :=  dm_Conexao.cds_CadProduto.FieldByName('estoque_atual').AsFloat;
+            self.estoqueminimo    :=  dm_Conexao.cds_CadProduto.FieldByName('estoqueminimo').AsFloat;
+            self.precocompra      :=  dm_Conexao.cds_CadProduto.FieldByName('precocompra').AsFloat;
+            self.precovenda       :=  dm_Conexao.cds_CadProduto.FieldByName('precovenda').AsFloat;
+            self.valordelucro     :=  dm_Conexao.cds_CadProduto.FieldByName('valordelucro').AsFloat;
+            self.unidade          :=  dm_Conexao.cds_CadProduto.FieldByName('unidade').AsString;
+            self.datacad          :=  dm_Conexao.cds_CadProduto.FieldByName('datacad').AsDateTime;
+            self.obs              :=  dm_Conexao.cds_CadProduto.FieldByName('obs').AsString;
+            self.mesano           :=  dm_Conexao.cds_CadProduto.FieldByName('mesano').AsString;
+            self.tipo             :=  dm_Conexao.cds_CadProduto.FieldByName('tipo').AsString;
+            self.aliquota         :=  dm_Conexao.cds_CadProduto.FieldByName('aliquota').AsString;
+            self.status           :=  dm_Conexao.cds_CadProduto.FieldByName('status').AsString;
+            Result                := true;
+            Showmessage(_sql);
+        end else begin
+            Showmessage('Este produto não está cadastrado portanto não será incluído como similar no momento');
+            Result                := false;
+
+        end;
+
+     end;
+
+end;
+
+end.

@@ -1,0 +1,285 @@
+unit U_ConsOrcamentosPeriodo;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, ExtCtrls, Grids, DBGrids, Mask, DBCtrls,SqlExpr,
+  ToolEdit;
+
+type
+  T_frmConsOrcamentosPeriodo = class(TForm)
+    pan_titulo: TPanel;
+    pangrid_atendimentos: TPanel;
+    pan_botoes: TPanel;
+    lblDataDoDia: TLabel;
+    lblHoraAtual: TLabel;
+    lblStatusLogoff: TLabel;
+    grid_Lista: TDBGrid;
+    GroupBox1: TGroupBox;
+    btnFechar: TSpeedButton;
+    btnPesquisar: TSpeedButton;
+    btnImprimirPeriodo: TSpeedButton;
+    grDatas: TGroupBox;
+    lbl52: TLabel;
+    edt_DataInicio: TDateEdit;
+    lbl53: TLabel;
+    edt_DataFim: TDateEdit;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnFecharClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnPesquisarClick(Sender: TObject);
+    procedure PesquisarPeriodo;
+    procedure btnImprimirPeriodoClick(Sender: TObject);
+    procedure grid_ListaCellClick(Column: TColumn);
+    procedure edt_DataInicioChange(Sender: TObject);
+    procedure grid_ListaDrawColumnCell(Sender: TObject;
+      const Rect: TRect; DataCol: Integer; Column: TColumn;
+      State: TGridDrawState);
+
+
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+     NumOrcamentoSelecionado,IDCliente : integer;
+  end;
+
+var
+  _frmConsOrcamentosPeriodo: T_frmConsOrcamentosPeriodo;
+
+
+implementation
+
+uses U_dmDados,  U_dmPesquisas, U_dmDadosSegundo,
+  U_BiblioSysSalao,  U_principal, DBClient, U_QRelCotacaoPeriodo,
+  U_FecharCotacao, U_Cotacao, U_orcamento,
+  U_AtualizarFecharOrcamento, DB, U_QRelOrcamentoPeriodo;
+
+{$R *.dfm}
+
+
+procedure T_frmConsOrcamentosPeriodo.FormCreate(Sender: TObject);
+//DESABILITA O BOTAO FECHAR DO FORMULÁRIO
+var
+  hwndHandle : THANDLE;
+  hMenuHandle : HMenu;
+begin
+//Impede movimentação do formulário
+ DeleteMenu(GetSystemMenu(Handle, False), SC_MOVE, MF_BYCOMMAND);
+
+  hwndHandle := Self.Handle;
+  if (hwndHandle <> 0) then
+    begin
+      hMenuHandle := GetSystemMenu(hwndHandle, FALSE);
+        if (hMenuHandle <> 0) then
+          DeleteMenu(hMenuHandle, SC_CLOSE, MF_BYCOMMAND);
+
+  end;
+
+
+    //Recebe a data atual por padrão
+    lblDataDoDia.Caption    :=  DateToStr(date);
+    lblHoraAtual.Caption    :=  timetoStr(time);
+    lblStatusLogoff.Caption :=  IdentificarUsuarioLogado;
+    edt_DataInicio.Date     :=  date;
+    edt_DataFim.Date        :=  date;
+
+end;
+
+procedure T_frmConsOrcamentosPeriodo.FormShow(Sender: TObject);
+begin
+
+    DM_Pesq.cdsPesqListaOrcamentos.Active := true;
+    Caption := 'LOGADO POR '+NomeDoUsuarioLogado;
+
+end;
+
+procedure T_frmConsOrcamentosPeriodo.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+
+    DM_Pesq.cdsPesqListaOrcamentos.Active := false;
+    Release;
+
+end;
+
+procedure T_frmConsOrcamentosPeriodo.btnFecharClick(Sender: TObject);
+begin
+
+      if btnFechar.Caption = 'Limpar' then
+      begin
+
+          grDatas.Enabled                   := true; 
+          edt_DataInicio.SetFocus;
+          btnFechar.Caption                 := 'Sair';
+          btnImprimirPeriodo.Enabled        := false;
+          btnPesquisar.Enabled              := true;
+
+      end else begin
+
+         Close;
+
+      end;
+      FreeAndNil(Q_RelOrcamentoPeriodo);
+
+end;
+
+procedure T_frmConsOrcamentosPeriodo.PesquisarPeriodo;
+var
+  DataInicio, DataFim : TDate;
+begin
+
+             DataInicio     := StrToDate(edt_DataInicio.text);
+             DataFim        := StrToDate(edt_DataFim.text);
+
+             Application.CreateForm(TQ_RelOrcamentoPeriodo,  Q_RelOrcamentoPeriodo);
+             with  Q_RelOrcamentoPeriodo.cds_RelOrcamentoPeriodo do
+             begin
+
+                Close;
+                Params.ParamByName('datainicial').AsDate := DataInicio;
+                Params.ParamByName('datafinal').AsDate   := DataFim;
+                Open;
+
+                if IsEmpty then
+                  begin
+
+                         Application.MessageBox('Não foram encontrados  registros  com  status  PENDENTE no período selecionado verifique se os clientes já aprovaram os orçamentos!',
+                         'Atenção...', MB_OK + MB_ICONWARNING);
+                         grDatas.Enabled     := false;
+                         edt_DataFim.Date    := date;
+                         exit;
+
+                  end else begin
+
+                    //preenche o grid com a consulta
+                    grid_Lista.DataSource       :=  Q_RelOrcamentoPeriodo.ds_RelOrcamentoPeriodo;
+                    grid_Lista.Enabled          :=true;
+                    btnImprimirPeriodo.Enabled  :=true;
+
+                end;
+
+        end;
+
+end;
+
+
+procedure T_frmConsOrcamentosPeriodo.btnPesquisarClick(Sender: TObject);
+begin
+
+        periodo := edt_DataInicio.Text+' a '+edt_DataFim.Text;
+        
+        if (edt_DataInicio.Text = '  /  /    ') or (edt_DataFim.Text = '  /  /    ') then
+        begin
+                  Application.MessageBox('É necessário uma data inicial e uma data final para efetuar a pesquisa !', 'Período Inválido!', MB_OK);
+                  //edt_datainicio.text          := '  /  /    ';
+                  edt_DataFim.Date             := date;
+                  edt_DataInicio.SetFocus;
+
+        end
+        else if (edt_DataFim.Date >= edt_DataInicio.Date) then begin
+
+                 PesquisarPeriodo;
+                 btnPesquisar.Enabled              := false;
+                 btnFechar.Caption                 := 'Limpar';
+
+        end else begin
+
+          Application.MessageBox('A data inicial não pode ser maior que a data final!', 'Período Inválido!', MB_OK);
+          //edt_datainicio.text := '  /  /    ';
+          edt_DataInicio.SetFocus;
+
+       end;
+
+end;
+
+procedure T_frmConsOrcamentosPeriodo.btnImprimirPeriodoClick(
+  Sender: TObject);
+begin
+
+       Q_RelOrcamentoPeriodo.Q_NomeUsuarioLogado.Caption := sUsuarioLogado;
+       Q_RelOrcamentoPeriodo.ReportTitle:='Lista orçamentos dentro do período '+periodo;
+       Q_RelOrcamentoPeriodo.Preview;
+       FreeAndNil(Q_RelOrcamentoPeriodo);
+
+       //COLOCAR NO FINAL DAS OPÇÕES
+       //edt_datainicio.text                  := '  /  /    ';
+       edt_DataFim.Date                     := date;
+       btnImprimirPeriodo.Enabled           := false;
+       btnPesquisar.Enabled                 := true;
+       grid_Lista.Enabled                   := false;
+       btnFechar.Caption                    := 'Limpar';
+       btnFecharClick(self);
+       LogOperacoes(NomeDoUsuarioLogado, 'acesso a impressão de orçamentos por período');
+
+end;
+
+procedure T_frmConsOrcamentosPeriodo.grid_ListaCellClick(
+  Column: TColumn);
+begin
+
+       //peguei os valores do relatorio pq ao clicar o mesmo ja é aberto e contem os valores necessarios
+       //o grid foi carregado com os dados desse relatorio
+
+       NumOrcamentoSelecionado   := Q_RelOrcamentoPeriodo.cds_RelOrcamentoPeriodo.FieldByName('ID_ORCAMENTO').AsInteger;
+       IDCliente                 := Q_RelOrcamentoPeriodo.cds_RelOrcamentoPeriodo.FieldByName('ID_CLIENTE').AsInteger;
+
+       Application.CreateForm(T_frmAtualizarFecharOrcamento,  _frmAtualizarFecharOrcamento);
+       _frmAtualizarFecharOrcamento.ShowModal;
+       FreeAndNil(_frmAtualizarFecharOrcamento);
+
+       FreeAndNil(Q_RelOrcamentoPeriodo);
+end;
+
+procedure T_frmConsOrcamentosPeriodo.edt_DataInicioChange(Sender: TObject);
+begin
+
+   btnPesquisar.Enabled := true;
+
+end;
+
+procedure T_frmConsOrcamentosPeriodo.grid_ListaDrawColumnCell(
+  Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+begin
+
+      with grid_Lista do
+      begin
+
+        if DataSource.DataSet.FieldByName('status').AsString = 'AB' then
+        begin
+
+            if (gdSelected in State) then
+
+              Canvas.Brush.Color := clMaroon   // cor do fundo da linha que estiver selecionada
+
+            else
+            begin
+
+              // configuração das linhas que atendem o primeiro if, ou seja com STATUS A
+              Canvas.Font.Style  := [fsBold];
+              Canvas.Font.Color  := clBlue;
+
+              // cor do fundo de todas as linhas
+              Canvas.Brush.Color := clInfoBk;
+
+            end
+            end else begin
+
+              // configuração das linhas que não atendem o primeiro if, ou seja com STATUS F ou C
+              Canvas.Font.Color  := clRed;
+              Canvas.Brush.Color := clInfoBk;
+
+            end;
+
+            DefaultDrawColumnCell(Rect,DataCol,Column,State);
+
+      end;
+
+end;
+
+end.
+

@@ -1,0 +1,33 @@
+object DM_NEW: TDM_NEW
+  OldCreateOrder = False
+  Left = 675
+  Top = 361
+  Height = 260
+  Width = 428
+  object cdsPesqContato: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspPesqContatos'
+    Left = 250
+    Top = 8
+  end
+  object dsPesqContato: TDataSource
+    DataSet = cdsPesqContato
+    Left = 344
+    Top = 8
+  end
+  object sdsPesqContatos: TSQLDataSet
+    CommandText = 'select * from contatos'
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = dm_Conexao.conexao_dados
+    Left = 40
+    Top = 8
+  end
+  object dspPesqContatos: TDataSetProvider
+    DataSet = sdsPesqContatos
+    Options = [poAllowCommandText]
+    Left = 152
+    Top = 8
+  end
+end
