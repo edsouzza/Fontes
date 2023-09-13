@@ -1,0 +1,50 @@
+     ==================================================================
+                                                                       
+     EDSOF INFORMATICA                                                      
+     R.MUNIZ BARRETO,201  V.TEREZINHA  SAO PAULO  SP                       
+     CNPJ:00.000.000/0000-00  CPF:000.000.000-00  I.E.:000.000.000.000                        
+     ==================================================================
+                                 O.S. Nº 7    
+     ==================================================================
+     CÓDIGO   : 2                           
+     CLIENTE  : RENOVADORA FAST CLEAN                                 
+     ENDEREÇO : R.LAURO JOSE DOS SANTOS
+     ATENDIDO : EDI AQUINO DE SOUZA                                
+     ==================================================================
+                                                                       
+     DEFEITO/CLIENTE : Atualizar sita 
+                                                                       
+     PARECER/TECNICO :                                                 
+                                                                       
+                                                                       
+                                                                       
+                                                                       
+                                                                       
+     VIA LOJA                             SÃO PAULO,12/09/2023 19:23:37
+     ==================================================================
+                                                                       
+                                                                       
+     ==================================================================
+                                                                       
+     EDSOF INFORMATICA                                                      
+     R.MUNIZ BARRETO,201  V.TEREZINHA  SAO PAULO  SP                       
+     CNPJ:00.000.000/0000-00  CPF:000.000.000-00  I.E.:000.000.000.000                        
+     ==================================================================
+                                 O.S. Nº 7    
+     ==================================================================
+     CÓDIGO   : 2                           
+     CLIENTE  : RENOVADORA FAST CLEAN                                 
+     ENDEREÇO : R.LAURO JOSE DOS SANTOS
+     ATENDIDO : EDI AQUINO DE SOUZA                                
+     ==================================================================
+                                                                       
+     DEFEITO/CLIENTE : Atualizar sita 
+                                                                       
+     PARECER/TECNICO :                                                 
+                                                                       
+                                                                       
+                                                                       
+                                                                       
+                                                                       
+     VIA CLIENTE                          SÃO PAULO,12/09/2023 19:23:37
+     ==================================================================

@@ -46,6 +46,7 @@ object _frmLiberarModuloFrenteCaixa: T_frmLiberarModuloFrenteCaixa
           Hint = 'Insira a chave ou entre em contato com o suporte para obt'#234'-la'
           CharCase = ecUpperCase
           Ctl3D = False
+          Enabled = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
@@ -58,6 +59,7 @@ object _frmLiberarModuloFrenteCaixa: T_frmLiberarModuloFrenteCaixa
           PasswordChar = '*'
           ShowHint = True
           TabOrder = 0
+          Text = '872D598132A438A1B29578532'
           OnChange = edt_ChaveChange
           OnKeyDown = edt_ChaveKeyDown
         end
@@ -75,7 +77,6 @@ object _frmLiberarModuloFrenteCaixa: T_frmLiberarModuloFrenteCaixa
           Height = 38
           Cursor = crHandPoint
           Caption = 'Liberar M'#243'dulo'
-          Enabled = False
           Flat = True
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWhite

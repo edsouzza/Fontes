@@ -55,6 +55,7 @@ object _frmLiberarModuloFrenteCaixa: T_frmLiberarModuloFrenteCaixa
           ParentCtl3D = False
           ParentFont = False
           ParentShowHint = False
+          PasswordChar = '*'
           ShowHint = True
           TabOrder = 0
           OnChange = edt_ChaveChange

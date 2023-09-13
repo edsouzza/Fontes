@@ -305,7 +305,6 @@ procedure T_frmPrincipal.FormShow(Sender: TObject);
 begin
 
     //carregando a logo da empresa dados vindo da tabela EMPRESA
-    //logo.Picture.LoadFromFile(CarregarLogoEmpresa);
     logo.Picture.LoadFromFile(getLogoEmpresa); 
 
     DataAtual          := now;

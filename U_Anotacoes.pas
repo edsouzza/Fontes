@@ -92,6 +92,7 @@ type
     procedure memoAlteraObsKeyPress(Sender: TObject; var Key: Char);
     procedure memoAlteraObsEnter(Sender: TObject);
     procedure btnExcluirClick(Sender: TObject);
+    procedure edtAlteraNomeClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -264,7 +265,6 @@ begin
     BancoParaEdts;
     btnSairAlteracao.Enabled     := true;
     edtFiltro.Text               :='';
-    btnConfirmaAlteracao.Enabled := true;
     btnAlterar.Enabled           :=false;
     DesabilitarBotoes;
 
@@ -826,6 +826,13 @@ end;
 procedure TF_ANOTACOES.memoAlteraObsEnter(Sender: TObject);
 begin
     F_ANOTACOES.KeyPreview   := false;
+end;
+
+procedure TF_ANOTACOES.edtAlteraNomeClick(Sender: TObject);
+begin
+
+    btnConfirmaAlteracao.Enabled := true;
+    
 end;
 
 end.

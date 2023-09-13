@@ -68,7 +68,6 @@ type
     QRDBText4: TQRDBText;
     QRLabel11: TQRLabel;
     QRDBText7: TQRDBText;
-    QRDBText10: TQRDBText;
     QRDBText11: TQRDBText;
     QRLabel13: TQRLabel;
     QRDBText16: TQRDBText;
@@ -110,6 +109,7 @@ type
     cds_RelOrcamentoITEM_ID: TIntegerField;
     cds_RelOrcamentoDESCRICAO: TStringField;
     QRLogo: TQRImage;
+    lblUsuarioLogado: TQRLabel;
     procedure qrbndDetailBand1BeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
     procedure qrbnd1BeforePrint(Sender: TQRCustomBand;
@@ -168,6 +168,7 @@ begin
 
   //carregando a logo da empresa
   QRLogo.Picture.LoadFromFile(CarregarLogoEmpresa);
+  lblUsuarioLogado.Caption := sUsuarioLogado;
 
 end;
 

@@ -92,6 +92,7 @@ type
     procedure memoAlteraObsKeyPress(Sender: TObject; var Key: Char);
     procedure memoAlteraObsEnter(Sender: TObject);
     procedure btnExcluirClick(Sender: TObject);
+    procedure edtAlteraNomeClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -217,10 +218,10 @@ begin
       end else begin
 
          GravaRegs;
-         LogOperacoes(NomeDoUsuarioLogado, 'cadastro de '+nomeTabela+'');
-         btnSairInclusao.Enabled:= true;
+         LogOperacoes(NomeDoUsuarioLogado, 'cadastro de '+nomeTabela+'');  
          btnCancelarInclusao.Enabled:= false;
          DesabilitarBotoes;
+         btnSairInclusao.Enabled:= true;
       end;
 
       F_ANOTACOES.KeyPreview   := true;
@@ -264,7 +265,6 @@ begin
     BancoParaEdts;
     btnSairAlteracao.Enabled     := true;
     edtFiltro.Text               :='';
-    btnConfirmaAlteracao.Enabled := true;
     btnAlterar.Enabled           :=false;
     DesabilitarBotoes;
 
@@ -552,6 +552,7 @@ begin
              Application.MessageBox('Digite um assunto para continuar!!',
                                   'Nome inválido!', MB_OK + MB_ICONWARNING);
            edt_nome.SetFocus;
+           btnSairInclusao.Enabled:=true;
           end;
     end;      
 
@@ -726,7 +727,8 @@ begin
 
 if(key = 13)then
   begin
-      cadastrando:=true;   
+      cadastrando:=true;
+      memoInclusaoObs.SetFocus;
   end;
 end;
 
@@ -824,6 +826,13 @@ end;
 procedure TF_ANOTACOES.memoAlteraObsEnter(Sender: TObject);
 begin
     F_ANOTACOES.KeyPreview   := false;
+end;
+
+procedure TF_ANOTACOES.edtAlteraNomeClick(Sender: TObject);
+begin
+
+    btnConfirmaAlteracao.Enabled := true;
+    
 end;
 
 end.

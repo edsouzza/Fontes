@@ -1,6 +1,6 @@
 object _frmProdutos: T_frmProdutos
-  Left = 398
-  Top = 182
+  Left = 394
+  Top = 240
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Controle de Produtos'
@@ -1447,17 +1447,20 @@ object _frmProdutos: T_frmProdutos
         end
         object lblLucro: TLabel
           Left = 189
-          Top = 138
-          Width = 56
+          Top = 136
+          Width = 43
           Height = 13
-          Caption = '% LUCRO'
+          Caption = 'LUCRO'
         end
         object lbl16: TLabel
-          Left = 372
+          Left = 375
           Top = 138
           Width = 110
           Height = 13
+          Hint = 'Lucro por Percentual ou Valor'
           Caption = 'PRE'#199'O DE VENDA'
+          ParentShowHint = False
+          ShowHint = True
         end
         object Label20: TLabel
           Left = 556
@@ -1540,6 +1543,13 @@ object _frmProdutos: T_frmProdutos
           Height = 13
           Caption = 'C'#211'D.BARRAS LEITOR EAN13'
         end
+        object Label41: TLabel
+          Left = 592
+          Top = 28
+          Width = 131
+          Height = 13
+          Caption = 'TIPO DE LUCRO POR:'
+        end
         object edt_CodAlt1: TEdit
           Left = 8
           Top = 111
@@ -1556,13 +1566,13 @@ object _frmProdutos: T_frmProdutos
           ParentFont = False
           ParentShowHint = False
           ShowHint = True
-          TabOrder = 2
+          TabOrder = 3
           OnEnter = edt_CodAlt1Enter
         end
         object edt_DescricaoCadProduto: TEdit
           Left = 190
           Top = 46
-          Width = 542
+          Width = 398
           Height = 26
           Hint = 'descri'#231#227'o do produto'
           CharCase = ecUpperCase
@@ -1596,7 +1606,7 @@ object _frmProdutos: T_frmProdutos
           ParentFont = False
           ParentShowHint = False
           ShowHint = True
-          TabOrder = 10
+          TabOrder = 11
           Text = '5,00'
           OnEnter = txtEstoqueMinimoEnter
           OnKeyPress = txtEstoqueMinimoKeyPress
@@ -1617,7 +1627,7 @@ object _frmProdutos: T_frmProdutos
           ListSource = dm_DadosSegundo.ds_Categorias
           ParentCtl3D = False
           ParentFont = False
-          TabOrder = 12
+          TabOrder = 13
           OnClick = DBCategoriaClick
           OnEnter = DBCategoriaEnter
         end
@@ -1637,7 +1647,7 @@ object _frmProdutos: T_frmProdutos
           ListSource = dm_Conexao.ds_Fabricante
           ParentCtl3D = False
           ParentFont = False
-          TabOrder = 11
+          TabOrder = 12
           OnClick = DBFabricanteClick
           OnEnter = DBFabricanteEnter
         end
@@ -1657,7 +1667,7 @@ object _frmProdutos: T_frmProdutos
           ListSource = dm_Conexao.ds_Fornecedor
           ParentCtl3D = False
           ParentFont = False
-          TabOrder = 13
+          TabOrder = 14
           OnClick = DBFornecedorProdutoClick
           OnEnter = DBFornecedorProdutoEnter
         end
@@ -1675,7 +1685,7 @@ object _frmProdutos: T_frmProdutos
           Inteiro = 6
           ParentCtl3D = False
           ParentFont = False
-          TabOrder = 6
+          TabOrder = 7
           Text = '0,00'
           OnEnter = edt_precocompraEnter
           OnExit = edt_precocompraExit
@@ -1685,6 +1695,7 @@ object _frmProdutos: T_frmProdutos
           Top = 155
           Width = 180
           Height = 19
+          Hint = 'Lucro por Percentual ou Valor'
           Ctl3D = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlue
@@ -1694,10 +1705,13 @@ object _frmProdutos: T_frmProdutos
           Inteiro = 6
           ParentCtl3D = False
           ParentFont = False
-          TabOrder = 7
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 8
           Text = '0,00'
           OnEnter = edt_percentualEnter
           OnExit = edt_percentualExit
+          OnKeyPress = edt_percentualKeyPress
         end
         object edt_precovenda: TEditNum
           Left = 370
@@ -1713,7 +1727,7 @@ object _frmProdutos: T_frmProdutos
           Inteiro = 6
           ParentCtl3D = False
           ParentFont = False
-          TabOrder = 8
+          TabOrder = 9
           Text = '0,00'
           OnEnter = edt_precovendaEnter
         end
@@ -1733,7 +1747,7 @@ object _frmProdutos: T_frmProdutos
           ParentFont = False
           ParentShowHint = False
           ShowHint = True
-          TabOrder = 9
+          TabOrder = 10
           Text = '0'
           OnEnter = edt_QuantidadeDeEntradaEnter
           OnExit = edt_QuantidadeDeEntradaExit
@@ -1754,7 +1768,7 @@ object _frmProdutos: T_frmProdutos
           ItemIndex = 0
           ParentCtl3D = False
           ParentFont = False
-          TabOrder = 16
+          TabOrder = 17
           Text = 'UN'
           OnEnter = cmbUnidadeEnter
           Items.Strings = (
@@ -1777,7 +1791,7 @@ object _frmProdutos: T_frmProdutos
           ItemIndex = 0
           ParentCtl3D = False
           ParentFont = False
-          TabOrder = 15
+          TabOrder = 16
           Text = '17'
           OnEnter = cmbAliquotaEnter
           Items.Strings = (
@@ -1801,7 +1815,7 @@ object _frmProdutos: T_frmProdutos
           ParentCtl3D = False
           ParentFont = False
           ReadOnly = True
-          TabOrder = 17
+          TabOrder = 18
           Text = '0,00'
         end
         object edt_CodAlt2: TEdit
@@ -1820,7 +1834,7 @@ object _frmProdutos: T_frmProdutos
           ParentFont = False
           ParentShowHint = False
           ShowHint = True
-          TabOrder = 3
+          TabOrder = 4
           OnEnter = edt_CodAlt2Enter
         end
         object edt_CodAlt3: TEdit
@@ -1839,7 +1853,7 @@ object _frmProdutos: T_frmProdutos
           ParentFont = False
           ParentShowHint = False
           ShowHint = True
-          TabOrder = 4
+          TabOrder = 5
           OnEnter = edt_CodAlt3Enter
         end
         object edt_CodAlt4: TEdit
@@ -1858,7 +1872,7 @@ object _frmProdutos: T_frmProdutos
           ParentFont = False
           ParentShowHint = False
           ShowHint = True
-          TabOrder = 5
+          TabOrder = 6
           OnEnter = edt_CodAlt4Enter
         end
         object edt_CodigoProduto: TEdit
@@ -1867,6 +1881,7 @@ object _frmProdutos: T_frmProdutos
           Width = 173
           Height = 26
           Hint = 'codigo de barras do produto'
+          CharCase = ecUpperCase
           Ctl3D = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlue
@@ -1880,10 +1895,8 @@ object _frmProdutos: T_frmProdutos
           ShowHint = True
           TabOrder = 0
           Text = '0000000000000'
-          OnChange = edt_CodigoProdutoChange
+          OnClick = edt_CodigoProdutoClick
           OnEnter = edt_CodigoProdutoEnter
-          OnKeyDown = edt_CodigoProdutoKeyDown
-          OnKeyPress = edt_CodigoProdutoKeyPress
         end
         object edtAplicacao: TEdit
           Left = 8
@@ -1901,8 +1914,31 @@ object _frmProdutos: T_frmProdutos
           ParentFont = False
           ParentShowHint = False
           ShowHint = True
-          TabOrder = 14
+          TabOrder = 15
           OnEnter = edtAplicacaoEnter
+        end
+        object cmbTipoLucro: TComboBox
+          Left = 592
+          Top = 46
+          Width = 139
+          Height = 28
+          Ctl3D = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlue
+          Font.Height = -16
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ItemHeight = 20
+          ItemIndex = 0
+          ParentCtl3D = False
+          ParentFont = False
+          TabOrder = 2
+          Text = 'PERCENTUAL'
+          OnClick = cmbTipoLucroClick
+          OnEnter = cmbTipoLucroEnter
+          Items.Strings = (
+            'PERCENTUAL'
+            'VALOR')
         end
       end
       object txtStatusCadastro: TStaticText
@@ -14056,7 +14092,7 @@ object _frmProdutos: T_frmProdutos
     end
   end
   object abrefoto: TOpenPictureDialog
-    Left = 912
-    Top = 178
+    Left = 920
+    Top = 274
   end
 end

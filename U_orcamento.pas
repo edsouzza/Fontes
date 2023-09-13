@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, Mask, DBCtrls, Buttons, ExtCtrls,DateUtils, ToolEdit,
-  CurrEdit, Grids, DBGrids, Menus, Math;
+  CurrEdit, Grids, DBGrids, Menus, Math, printers,ShellAPI;
 
 type
   T_frmOrcamento = class(TForm)
@@ -47,6 +47,7 @@ type
     edtDescontoServico: TCurrencyEdit;
     edtQdeServico: TEdit;
     btnInserirItem: TButton;
+    btnImprimirOS: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
     procedure AbrirTabelas;
@@ -105,13 +106,17 @@ type
     procedure AtualizarItemAposExclusao;
     procedure CopiarItemsGravarNoBanco;
     procedure FormShow(Sender: TObject);
-
+    procedure btnImprimirOSClick(Sender: TObject);
+    procedure edtDescrMaoDeObraExit(Sender: TObject);
+    procedure criarArquivoTXT;
+    procedure imprimirArquivoTXT(caminhoArq:String);
 
 
   private
     { Private declarations }
+    sServico : string;
     OrcamentoAberto, InseriuPeca  : Boolean;
-
+    arq_impress : TextFile;
 
   public
     { Public declarations }
@@ -230,6 +235,7 @@ begin
     dm_DadosSegundo.cds_IOrcamento.Active               := true;
     dm_DadosSegundo.cds_Orcamento.Active                := true;
     dm_DadosSegundo.cds_TOrcamento.Active               := true;
+    dm_DadosSegundo.cds_Empresa.Active                  := true;
 
 end;
 
@@ -241,6 +247,7 @@ begin
     dm_DadosSegundo.cds_IOrcamento.Active               := false;
     dm_DadosSegundo.cds_Orcamento.Active                := false;
     dm_DadosSegundo.cds_TOrcamento.Active               := false;
+    dm_DadosSegundo.cds_Empresa.Active                  := false;
 
 end;
 
@@ -252,12 +259,14 @@ begin
     dm_DadosSegundo.cds_IOrcamento.Active               := false;
     dm_DadosSegundo.cds_Orcamento.Active                := false;
     dm_DadosSegundo.cds_TOrcamento.Active               := false;
+    dm_DadosSegundo.cds_Empresa.Active                  := false;
 
     dm_Conexao.cds_DadosClientes.Active                 := true;
     dm_Conexao.cds_DadosFuncionarios.Active             := true;
     dm_DadosSegundo.cds_IOrcamento.Active               := true;
     dm_DadosSegundo.cds_Orcamento.Active                := true;
     dm_DadosSegundo.cds_TOrcamento.Active               := true;
+    dm_DadosSegundo.cds_Empresa.Active                  := true;
 
 
 end;
@@ -267,7 +276,7 @@ procedure T_frmOrcamento.edt_QuantidadeServicoComandaKeyPress(
   Sender: TObject; var Key: Char);
 begin
 
-   // PARA DBEDIT ACEITAR APENAS NUMEROS
+        // PARA DBEDIT ACEITAR APENAS NUMEROS
         If NOT (Key in['0'..'9',',',#8,#13]) then begin Key:=#0;end;
 
 end;
@@ -317,6 +326,7 @@ begin
       btnGravarOrcamento.Enabled           := false;
       btnCancelarOrcamento.Enabled         := false;
       btnImprimir.Enabled                  := false;
+      btnImprimirOS.Enabled                := false;
       btnSair.Enabled                      := false;
 
       rd_exclusaodoitem.Checked            := false;
@@ -333,6 +343,7 @@ begin
       btnGravarOrcamento.Enabled           := true;
       btnCancelarOrcamento.Enabled         := true;
       btnImprimir.Enabled                  := true;
+      btnImprimirOS.Enabled                := true;
       btnSair.Enabled                      := true;    
 
 end;
@@ -494,6 +505,7 @@ begin
           btnGravarOrcamento.Enabled             := false;
           btnCancelarOrcamento.Enabled           := false;
           btnImprimir.Enabled                    := false;
+          btnImprimirOS.Enabled                  := false;
           btnSair.Enabled                        := true;
           inseriuServico                         := false;
           inseriuProduto                         := false;
@@ -513,6 +525,7 @@ begin
           btnGravarOrcamento.Enabled             := false;
           btnCancelarOrcamento.Enabled           := false;
           btnImprimir.Enabled                    := false;
+          btnImprimirOS.Enabled                  := false;
           btnSair.Enabled                        := true;
           inseriuServico                         := false;
           inseriuProduto                         := false;
@@ -743,6 +756,7 @@ begin
        edtDescontoServico.Text       := '0,00';
        inseriuServico                := false;
        btnImprimir.Enabled           := true;
+       btnImprimirOS.Enabled         := true;
        panel_total.Enabled           := True;
        chkAPROVADO.Visible           := true;
        btnCancelarOrcamento.Enabled  := true;
@@ -1027,6 +1041,148 @@ begin
           edtDescrMaoDeObra.SetFocus;
        end;
 
+end;
+
+procedure T_frmOrcamento.edtDescrMaoDeObraExit(Sender: TObject);
+begin
+   sServico   := edtDescrMaoDeObra.Text;
+end;
+
+procedure T_frmOrcamento.btnImprimirOSClick(Sender: TObject);
+begin
+
+    criarArquivoTXT;
+    imprimirArquivoTXT(ExtractFilePath(Application.ExeName)+'OrdemServico.txt');
+
+
+end;
+
+procedure T_frmOrcamento.criarArquivoTXT;
+var caminhoArq,sEmpresa,sEnd,sBairro,sCidade,sUF,sCNPJ,sCPF,sIE,sNomeCliente,sEndCliente,sData,sHora : string;
+    iCodigoCliente : integer;
+begin
+
+     //Ou diricionar direto para impressora ou cria um arquivo txt
+     caminhoArq :=  ExtractFilePath(Application.ExeName)+'OrdemServico.txt';
+
+     //=============DADOS DA EMPRESA ============//
+     _Sql := 'SELECT * FROM EMPRESA';
+
+     with dm_DadosSegundo.cds_Empresa do
+     begin
+
+       close;
+       CommandText:= _Sql;
+       open;
+
+     end;
+
+     sEmpresa := dm_DadosSegundo.cds_Empresa.FieldByName('razaosocial') .AsString;
+     sEnd     := dm_DadosSegundo.cds_Empresa.FieldByName('endereco')    .AsString;
+     sBairro  := dm_DadosSegundo.cds_Empresa.FieldByName('bairro')      .AsString;
+     sCidade  := dm_DadosSegundo.cds_Empresa.FieldByName('cidade')      .AsString;
+     sUF      := dm_DadosSegundo.cds_Empresa.FieldByName('uf')          .AsString;
+     sCNPJ    := dm_DadosSegundo.cds_Empresa.FieldByName('cnpj')        .AsString;
+     sCPF     := dm_DadosSegundo.cds_Empresa.FieldByName('cpf')         .AsString;
+     sIE      := dm_DadosSegundo.cds_Empresa.FieldByName('ie')          .AsString;
+
+     //=============DADOS DO CLIENTE ============//
+     iCodigoCliente := strtoint(txt_IDCLIENTE.text);
+
+     _Sql := 'SELECT * FROM CLIENTES WHERE cli_id = :cli_id';
+
+     with dm_Conexao.cds_DadosClientes do
+     begin
+
+       close;
+       CommandText:= _Sql;
+       Params.ParamByName('cli_id').AsInteger  := iCodigoCliente;
+       open;
+
+     end;
+
+     sNomeCliente   := txtNomeCliente.caption;
+     sEndCliente    := dm_Conexao.cds_DadosClientes.fieldByName('cli_endereco').AsString;
+     sData          := lblDataDoDia.caption;
+     sHora          := lblHoraAtual.caption;
+     
+     //para ir direto a impressora
+     //AssignPrn(arq_impress);
+
+     //para gravar arquivo txt
+     AssignFile(arq_impress, caminhoArq);
+
+     Rewrite(arq_impress);
+
+     Printer.Canvas.Font.Name  := 'Courier new';
+     Printer.Canvas.Font.Size  := 11;
+
+     Write(arq_impress,#15);
+     Writeln(arq_impress, '     ==================================================================');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '     '+sEmpresa+'                                                      ');
+     Writeln(arq_impress, '     '+sEnd+'  '+sBairro+'  '+sCidade+'  '+sUF+'                       ');
+     Writeln(arq_impress, '     CNPJ:'+sCNPJ+'  CPF:'+sCPF+'  I.E.:'+sIE+'                        ');
+     Writeln(arq_impress, '     ==================================================================');
+     Writeln(arq_impress, '                                 O.S. Nº '+inttostr(NumOrcamento)+'    ');
+     Writeln(arq_impress, '     ==================================================================');
+     Writeln(arq_impress, '     CÓDIGO   : '+intToStr(iCodigoCliente)+'                           ');
+     Writeln(arq_impress, '     CLIENTE  : '+trim(sNomeCliente)+'                                 ');
+     Writeln(arq_impress, '     ENDEREÇO : '+sEndCliente+'');
+     Writeln(arq_impress, '     ATENDIDO : '+NomeDoUsuarioLogado+'                                ');
+     Writeln(arq_impress, '     ==================================================================');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '     DEFEITO/CLIENTE : '+sServico+' ');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '     PARECER/TECNICO :                                                 ');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '     VIA LOJA                             SÃO PAULO,'+sData+' '+sHora+'');
+     Writeln(arq_impress, '     ==================================================================');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '     ==================================================================');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '     '+sEmpresa+'                                                      ');
+     Writeln(arq_impress, '     '+sEnd+'  '+sBairro+'  '+sCidade+'  '+sUF+'                       ');
+     Writeln(arq_impress, '     CNPJ:'+sCNPJ+'  CPF:'+sCPF+'  I.E.:'+sIE+'                        ');
+     Writeln(arq_impress, '     ==================================================================');
+     Writeln(arq_impress, '                                 O.S. Nº '+inttostr(NumOrcamento)+'    ');
+     Writeln(arq_impress, '     ==================================================================');
+     Writeln(arq_impress, '     CÓDIGO   : '+intToStr(iCodigoCliente)+'                           ');
+     Writeln(arq_impress, '     CLIENTE  : '+trim(sNomeCliente)+'                                 ');
+     Writeln(arq_impress, '     ENDEREÇO : '+sEndCliente+'');
+     Writeln(arq_impress, '     ATENDIDO : '+NomeDoUsuarioLogado+'                                ');
+     Writeln(arq_impress, '     ==================================================================');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '     DEFEITO/CLIENTE : '+sServico+' ');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '     PARECER/TECNICO :                                                 ');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '                                                                       ');
+     Writeln(arq_impress, '     VIA CLIENTE                          SÃO PAULO,'+sData+' '+sHora+'');
+     Writeln(arq_impress, '     ==================================================================');
+
+     System.CloseFile(arq_impress);
+
+end;
+
+
+procedure T_frmOrcamento.imprimirArquivoTXT(caminhoArq : string);
+begin
+
+   //Imprime o arquivo TXT diretamente na impressora padrão do windows
+
+   ShellExecute(Handle, 'print', PChar(caminhoArq), nil, nil, SW_HIDE);
+   Application.MessageBox('Impressão iniciada...', 'Imprimindo', MB_OK);
+
+   
 end;
 
 end.

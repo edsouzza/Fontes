@@ -465,7 +465,9 @@ begin
 
     //gera um backup automatico do banco de dados na pasta padrão ou escolhida pelo cliente
     Arquivo := RetornarCaminhoPastaBackup+'SYSPDV.FDB';
-    SetFileAttributes(PChar(Arquivo),0); //setando o arquivo sem atributo para posterior exclusão se necessário ou seja não oculto, não somente leitura...
+
+    //setando o arquivo sem atributo para posterior exclusão se necessário ou seja não oculto, não somente leitura...
+    SetFileAttributes(PChar(Arquivo),0);
 
     //se pasta de backup não existir criar automaticamente
     if not DirectoryExists(RetornarCaminhoPastaBackup) then
@@ -530,9 +532,14 @@ begin
     end;
 
     //gerando backup do banco de dados na pasta padrao c:\backup_syspdv\ se o usuário não definiu uma pasta na hora da config inicial da empresa
-    pastaBackup := 'c:\bkpdados\';
+    //pastaBackup := 'c:\bkpdados\';
 
-    //criando a pasta padrão do backup
+    if(pastaBackup <> 'c:\bkpdados\')then
+    begin
+        pastaBackup := RetornarCaminhoPastaBackup;
+    end;
+
+    //criando a pasta padrão do backup caso o diretório não exista
     if not DirectoryExists(pastaBackup) then
     begin
         MkDir(PChar(pastaBackup));
@@ -541,9 +548,13 @@ begin
 
          Application.MessageBox('A pasta  de  backup do banco de dados foi definida  como  c:\bkpdados\, se desejar acesse a tela de configurações da empresa e altere o caminho!',
          'Pasta de backup de dados', MB_OK + MB_ICONWARNING);
-    end;
+    end else
+    begin
 
-   GerarBackupNaPasta;
+        //verificar o caminho da pasta
+        GerarBackupNaPasta;
+
+    end;
 
 end;
 

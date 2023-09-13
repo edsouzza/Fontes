@@ -10286,7 +10286,7 @@ object F_ANOTACOES: TF_ANOTACOES
         Width = 776
         Height = 260
         Ctl3D = False
-        MaxLength = 1000
+        MaxLength = 2500
         ParentCtl3D = False
         TabOrder = 1
         OnEnter = memoAlteraObsEnter
@@ -10311,6 +10311,7 @@ object F_ANOTACOES: TF_ANOTACOES
         ParentShowHint = False
         ShowHint = True
         TabOrder = 0
+        OnClick = edtAlteraNomeClick
       end
     end
     object grp3: TGroupBox
@@ -10503,7 +10504,7 @@ object F_ANOTACOES: TF_ANOTACOES
         Width = 754
         Height = 264
         Ctl3D = False
-        MaxLength = 1000
+        MaxLength = 2500
         ParentCtl3D = False
         TabOrder = 1
         OnEnter = memoInclusaoObsEnter

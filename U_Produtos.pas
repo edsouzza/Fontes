@@ -194,6 +194,8 @@ type
     dbedFABRICANTE: TDBEdit;
     grOBS: TGroupBox;
     memoTelaPrin: TDBMemo;
+    cmbTipoLucro: TComboBox;
+    Label41: TLabel;
 
     //PROCEDIMENTOS PERSO
     procedure PesquisarRelatorio;
@@ -250,6 +252,8 @@ type
     procedure ListarCategorias;
     procedure ListarFornecedores;
     procedure ListarFabricantes;
+    procedure CalcularPrecoVendaPorPercentual;
+    procedure CalcularPrecoVendaPorValor;
 
     //PROCEDIMENTOS PADRAO
     procedure btnSairClick(Sender: TObject);
@@ -397,6 +401,10 @@ type
     procedure dbedtFORNECEDORClick(Sender: TObject);
     procedure dbedFABRICANTEClick(Sender: TObject);
     procedure edt_CodigoProdutoClick(Sender: TObject);
+    procedure rdPORVALORClick(Sender: TObject);
+    procedure edt_percentualKeyPress(Sender: TObject; var Key: Char);
+    procedure cmbTipoLucroClick(Sender: TObject);
+    procedure cmbTipoLucroEnter(Sender: TObject);
 
 
   private
@@ -440,12 +448,13 @@ uses U_dmDados, U_dmDadosSegundo, U_BiblioSysSalao, U_dmPesquisas, U_QRelProduto
 
 var
   //itens para ser usado no txtStatus durante o cadastro do produto
-  ItensStatusCadastro : array[1..17] of string =('Entre com o código de barras, caso contrário será gerado automaticamente','Entre com a descrição do produto','Entre com o código alternativo',
+  ItensStatusCadastro : array[1..19] of string =('Entre com o código de barras, caso contrário será gerado automaticamente','Entre com a descrição do produto','Entre com o código alternativo',
                                                 'Entre com o preço de compra','Entre com o percentual de lucro','Entre com o preço de venda',
                                                 'Entre com a quantidade de entrada','Entre com o estoque mínimo para este produto',
                                                 '[Obrigatório] Escolha o fabricante na lista ou cadastre-o no botão abaixo', '[Obrigatório] Escolha a categoria na lista ou cadastre-a no botão abaixo','[Opcional] Entre com o fornecedor do produto',
                                                 '[Opcional] Entre com a aliquota de ICMS','[Opcional] Entre com o tipo de unidade', '[Opcional] Entre com as observações pertinentes ao produto',
-                                                '[Opcional] Entrando com a foto do produto','Clique no botão NOVO para continuar cadastrando','As fotos do produto dever ter largura maior que altura tipo => 400 x 237');
+                                                '[Opcional] Entrando com a foto do produto','Clique no botão NOVO para continuar cadastrando','As fotos do produto dever ter largura maior que altura tipo => 400 x 237', 'Defina como será calculado o lucro, por percentual % ou por valor',
+                                                'Entre com o valor de lucro');
 
 
 procedure T_frmProdutos.FormCreate(Sender: TObject);
@@ -834,6 +843,8 @@ begin
     bloco_campos_inclusao.Enabled := false;
     bloco_Foto.Enabled            := false;
     btnNovoProduto.Enabled        := true;
+    cmbTipoLucro.Enabled          := true;
+    cmbTipoLucro.ItemIndex        := 0;
     txtStatusCadastro.Caption     := ItensStatusCadastro[16];
 
 end;
@@ -1898,7 +1909,6 @@ begin
         begin
           Key := #0;
        end;
-
 end;
 
 
@@ -2354,27 +2364,79 @@ begin
 
 end;
 
-procedure T_frmProdutos.edt_percentualExit(Sender: TObject);
+procedure T_frmProdutos.CalcularPrecoVendaPorPercentual;
 begin
 
-      if ( edt_percentual.Text <> '0,00' ) then
+      precocompra            := strtofloat(edt_precocompra.text);
+      percentual             := strtofloat(edt_percentual.text);
+      precovenda             := CalcularValorPorPercentual(precocompra,percentual);
+      edt_precovenda.Text    := floattostr(precovenda);
+      edt_precovenda.Enabled := false;
+      edt_Lucro.text         := floattostr(precovenda - precocompra);
+      edt_QuantidadeDeEntrada.SetFocus;
+
+end;
+
+procedure T_frmProdutos.CalcularPrecoVendaPorValor;
+begin
+
+      precocompra            := strtofloat(edt_precocompra.text);
+      edt_Lucro.text         := floattostr(precovenda - precocompra);
+      valorlucro             := strtofloat(edt_percentual.text);
+      precovenda             := ( precocompra + valorlucro );
+      edt_Lucro.text         := floattostr(precovenda - precocompra);
+      edt_precovenda.Text    := floattostr(precovenda);
+      edt_precovenda.Enabled := false;
+      edt_percentual.text    := '0,00';
+      edt_QuantidadeDeEntrada.SetFocus;
+
+
+end;
+
+procedure T_frmProdutos.CalcularPrecoVenda;
+begin
+
+      if(cmbTipoLucro.ItemIndex = 0)then
       begin
 
-          CalcularPrecoVenda;
+         CalcularPrecoVendaPorPercentual;
 
-      end else
+      end else if(cmbTipoLucro.ItemIndex = 1)then
       begin
 
-       Application.MessageBox('O campo percentual de lucro não pode conter o valor zero!',
-                    'Valor inválido!', MB_OK + MB_ICONWARNING);
-       edt_percentual.SetFocus;
+           CalcularPrecoVendaPorValor;
 
       end;
 
 end;
 
+procedure T_frmProdutos.edt_percentualExit(Sender: TObject);
+begin
+
+    if( edt_percentual.Text = '0,00' ) then
+    begin
+
+           if(cmbTipoLucro.ItemIndex = 0)then
+           begin
+             Application.MessageBox('O valor do percentual de lucro não pode ser igual a zero!', 'Valor inválido', MB_ICONWARNING);
+           end else
+           begin
+              Application.MessageBox('O valor de lucro não pode ser igual a zero!', 'Valor inválido', MB_ICONWARNING);
+           end;
+           edt_percentual.SetFocus;
+
+    end else
+    begin
+      CalcularPrecoVenda;
+    end;
+
+end;
+
 procedure T_frmProdutos.CalcularValorDeLucro;
 begin
+
+  if ( edt_lucro.Text <> '0,00' ) then
+  begin
 
       precocompra            := strtofloat(edt_precocompra.text);
       precovenda             := strtofloat(edt_precovenda.text);
@@ -2393,32 +2455,23 @@ begin
 
       end;
 
+   end else begin
+
+      cmbTipoLucro.SetFocus;
+
+   end;
+
 end;
 
 
 procedure T_frmProdutos.edt_QuantidadeDeEntradaEnter(Sender: TObject);
 begin
 
-    CalcularValorDeLucro;
     btnFabricantes.Enabled      := true;
     btnCategorias.Enabled       := true;
-    btnForncedores.Enabled      := true;
+    btnForncedores.Enabled      := true;     
 
 end;
-
-procedure T_frmProdutos.CalcularPrecoVenda;
-begin
-
-      precocompra            := strtofloat(edt_precocompra.text);
-      percentual             := strtofloat(edt_percentual.text);
-      precovenda             := CalcularValorPorPercentual(precocompra,percentual);
-      edt_precovenda.Text    := floattostr(precovenda);
-      edt_precovenda.Enabled := false;
-
-      edt_QuantidadeDeEntrada.SetFocus;
-
-end;
-
 
 procedure T_frmProdutos.txtEstoqueMinimoKeyPress(Sender: TObject;
   var Key: Char);
@@ -2440,6 +2493,8 @@ begin
          bloco_campos_inclusao.Enabled:=false;
          bloco_Foto.Enabled:=false;
          btnNovoProduto.Enabled:=true;
+         cmbTipoLucro.Enabled := true;
+         cmbTipoLucro.ItemIndex := 0;
          txtEstoqueMinimo.Text  := '5,00';
   end;
         btnCancelarInclusao.Caption := 'Cancelar';
@@ -2816,7 +2871,7 @@ begin
         end;
 
     end;
-
+    txtStatusCadastro.Caption     := ItensStatusCadastro[2];
 end;
 
 procedure T_frmProdutos.edt_CodigoProdutoEnter(Sender: TObject);
@@ -2851,7 +2906,8 @@ end;
 
 procedure T_frmProdutos.edt_CodAlt1Enter(Sender: TObject);
 begin
-btnRetornaDaInclusao.Enabled:=false;
+btnRetornaDaInclusao.Enabled  :=false;
+cmbTipoLucro.Enabled          := false;
 txtStatusCadastro.Caption     := ItensStatusCadastro[3];
 if( edt_DescricaoCadProduto.Text = '' )then
    edt_DescricaoCadProduto.SetFocus;
@@ -2879,7 +2935,16 @@ end;
 
 procedure T_frmProdutos.edt_percentualEnter(Sender: TObject);
 begin
-txtStatusCadastro.Caption     := ItensStatusCadastro[5];
+
+   if(cmbTipoLucro.ItemIndex = 0)then
+   begin
+       txtStatusCadastro.Caption   := ItensStatusCadastro[5];
+   end else begin
+     txtStatusCadastro.Caption     := ItensStatusCadastro[19];
+   end;
+
+   edt_percentual.SelectAll;
+
 end;
 
 procedure T_frmProdutos.edt_precovendaEnter(Sender: TObject);
@@ -4043,6 +4108,28 @@ begin
      edt_CodigoProduto.SelStart:=0;
      edt_CodigoProduto.SelLength:= Length(edt_CodigoProduto.Text);
 
+end;
+
+procedure T_frmProdutos.rdPORVALORClick(Sender: TObject);
+begin
+  edt_percentual.SetFocus;
+end;
+
+procedure T_frmProdutos.edt_percentualKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+   if(key = #13)then
+       edt_QuantidadeDeEntrada.SetFocus;
+end;
+
+procedure T_frmProdutos.cmbTipoLucroClick(Sender: TObject);
+begin
+edt_CodAlt1.SetFocus; 
+end;
+
+procedure T_frmProdutos.cmbTipoLucroEnter(Sender: TObject);
+begin
+txtStatusCadastro.Caption     := ItensStatusCadastro[18];
 end;
 
 end.
