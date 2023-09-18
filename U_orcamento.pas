@@ -1115,9 +1115,8 @@ begin
      Rewrite(arq_impress);
 
      Printer.Canvas.Font.Name  := 'Courier new';
-     Printer.Canvas.Font.Size  := 11;
+     Printer.Canvas.Font.Size  := 11;  
 
-     Write(arq_impress,#15);
      Writeln(arq_impress, '     ==================================================================');
      Writeln(arq_impress, '                                                                       ');
      Writeln(arq_impress, '     '+sEmpresa+'                                                      ');

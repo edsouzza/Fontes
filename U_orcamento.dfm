@@ -272,7 +272,7 @@ object _frmOrcamento: T_frmOrcamento
       Height = 42
       Cursor = crHandPoint
       Hint = 'Imprimir atual or'#231'amento'
-      Caption = 'Imprimir '
+      Caption = 'Imprimir Or'#231'amento'
       Enabled = False
       Flat = True
       Font.Charset = ANSI_CHARSET

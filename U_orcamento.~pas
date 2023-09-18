@@ -110,7 +110,6 @@ type
     procedure edtDescrMaoDeObraExit(Sender: TObject);
     procedure criarArquivoTXT;
     procedure imprimirArquivoTXT(caminhoArq:String);
-    procedure imprimirArquivo;
 
 
   private
@@ -1108,17 +1107,16 @@ begin
      sHora          := lblHoraAtual.caption;
      
      //para ir direto a impressora
-     AssignPrn(arq_impress);
+     //AssignPrn(arq_impress);
 
      //para gravar arquivo txt
-     //AssignFile(arq_impress, caminhoArq);
+     AssignFile(arq_impress, caminhoArq);
 
      Rewrite(arq_impress);
 
      Printer.Canvas.Font.Name  := 'Courier new';
-     Printer.Canvas.Font.Size  := 11;
+     Printer.Canvas.Font.Size  := 11;  
 
-     Write(arq_impress,#15);
      Writeln(arq_impress, '     ==================================================================');
      Writeln(arq_impress, '                                                                       ');
      Writeln(arq_impress, '     '+sEmpresa+'                                                      ');
@@ -1174,12 +1172,6 @@ begin
 
 end;
 
-procedure T_frmOrcamento.imprimirArquivo;
-begin
-
-   AssignPrn(arq_impress);
-
-end;
 
 procedure T_frmOrcamento.imprimirArquivoTXT(caminhoArq : string);
 begin
